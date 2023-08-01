@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class UserSignupDto {
 
 	// 닉네임, 비밀번호, 비밀번호 확인을 request 에서 전달받기

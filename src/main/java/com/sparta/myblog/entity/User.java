@@ -2,10 +2,13 @@ package com.sparta.myblog.entity;
 
 import java.sql.Timestamp;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,15 +44,17 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
-	// @ColumnDefault("'user'")
-	// private String role; // admin, user, manager
+	@Column
+	@Enumerated(value = EnumType.STRING) // Enum 타입을 DB에 저장할 때 쓰는 Annotation
+	private UserRoleEnum role; // admin, user, manager
 
 	@CreationTimestamp // 시간 자동 입력
 	private Timestamp createDate;
 
-	public User(String userId, String password, String email) {
+	public User(String userId, String password, String email, UserRoleEnum role) {
 		this.userId = userId;
 		this.password = password;
 		this.email = email;
+		this.role = role;
 	}
 }
