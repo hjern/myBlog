@@ -10,8 +10,10 @@ import com.sparta.myblog.dto.LoginRequestDto;
 import com.sparta.myblog.dto.UserSignupDto;
 import com.sparta.myblog.entity.User;
 import com.sparta.myblog.entity.UserRoleEnum;
+import com.sparta.myblog.jwt.JwtUtil;
 import com.sparta.myblog.repository.UserRepository;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,6 +24,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder; // 패스워드 인코더를 사용하기 위해 주입
+	private final JwtUtil jwtUtil;
 
 	// 비밀번호는 최소 4자 이상이며, 닉네임과 같은 값이 포함된 경우 회원가입에 실패로 만들기
 	// 비밀번호 확인은 비밀번호와 정확하게 일치하기
@@ -63,7 +66,7 @@ public class UserService {
 
 	// 로그인 버튼을 누른 경우 닉네임과 비밀번호가 데이터베이스에 등록됐는지 확인한 뒤,
 	// 하나라도 맞지 않는 정보가 있다면 "닉네임 또는 패스워드를 확인해주세요."라는 에러 메세지를 response 에 포함하기
-	public ResponseEntity <ApiResponseDto> login (LoginRequestDto loginRequestDto) {
+	public ResponseEntity <ApiResponseDto> login (LoginRequestDto loginRequestDto, HttpServletResponse res) {
 		log.info("로그인 시도");
 		String userId = loginRequestDto.getUserId();
 		User enrolledUser = userRepository.findByUserId(userId).orElse(null);
@@ -79,6 +82,9 @@ public class UserService {
 			// throw new IllegalArgumentException("아이디 또는 패스워드를 확인해주세요.");
 
 		}
+
+		res.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(loginRequestDto.getUserId()));
+		jwtUtil.addJwtToCookie(res.getHeader(JwtUtil.AUTHORIZATION_HEADER), res);
 
 		return ResponseEntity.status(200).body(new ApiResponseDto("로그인에 성공했습니다.", HttpStatus.OK.value()));
 	}
