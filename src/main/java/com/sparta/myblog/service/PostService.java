@@ -14,6 +14,7 @@ import com.sparta.myblog.entity.Post;
 import com.sparta.myblog.entity.User;
 import com.sparta.myblog.repository.PostRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,6 +42,7 @@ public class PostService {
 	}
 
 	// 2. 전체 조회하기 -- PostResponseDto 가 리스트화할 수 있도록 메서드 선언
+	@Transactional
 	public List <PostResponseDto> getPosts() {
 		// Post entity 를 리스트화한다는 것은 postRepository 에 저장된 DB 를 생성된 순으로 목록화한다는 의미
 		List <Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
@@ -57,8 +59,16 @@ public class PostService {
 		return postResponseDto;
 	}
 
-	// 3. 개별 조회하기 -- 권한 있는 유저에 한해서 DB 더미 속에서 지정된 게시글 찾아오도록 메서드 선언
+	// 3. 개별 조회하기
+	@Transactional
+	public PostResponseDto getPost(Long id, User user) {
 
+		// 게시글 존재 확인하기
+		Post post = postRepository.findById(id).orElseThrow(
+			()-> new IllegalArgumentException("선택한 게시물은 존재하지 않습니다."));
+
+		return new PostResponseDto(post);
+	}
 	// 4. 수정하기
 
 	// 5. 삭제하기

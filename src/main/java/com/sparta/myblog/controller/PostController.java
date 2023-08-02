@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sparta.myblog.dto.ApiResponseDto;
 import com.sparta.myblog.dto.PostRequestDto;
 import com.sparta.myblog.dto.PostResponseDto;
+import com.sparta.myblog.entity.User;
 import com.sparta.myblog.security.UserDetailsImpl;
 import com.sparta.myblog.service.PostService;
 
@@ -38,6 +40,10 @@ public class PostController {
 	}
 
 	// 3. 개별 조회하기
+	@GetMapping("/post/{postId}")
+	public PostResponseDto getPost(@PathVariable Long postId, User user) {
+		return postService.getPost(postId, user);
+	}
 
 	// 4. 수정하기
 
