@@ -44,7 +44,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 				return;
 			}
 
-			Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+			Claims info = jwtUtil.paraseClaims(tokenValue);
 
 			try {
 				setAuthentication(info.getSubject());
@@ -58,9 +58,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	}
 
 	// 인증 처리
-	public void setAuthentication(String username) {
+	public void setAuthentication(String userId) {
 		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		Authentication authentication = createAuthentication(username);
+		Authentication authentication = createAuthentication(userId);
 		// username > user 조회 > userDetails 에 담고 > authentication 의 principal 에 담고
 		// > securityContent 에 담고 > SecurityContextHolder 에 담고
 		// > 이제 @AuthenticationPrincipal 로 조회할 수 있음
@@ -70,8 +70,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	}
 
 	// 인증 객체 생성
-	private Authentication createAuthentication(String username) {
-		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+	private Authentication createAuthentication(String userId) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
+		// Returns the authorities granted to the user. Cannot return null.
 		return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 	}
+
 }
