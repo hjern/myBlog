@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 
 @Getter
-public class CommnetRequestDto {
+public class CommentRequestDto {
 
 	@NotBlank
 	String comment;

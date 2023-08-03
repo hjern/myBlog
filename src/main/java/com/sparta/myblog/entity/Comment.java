@@ -1,10 +1,6 @@
 package com.sparta.myblog.entity;
 
-import java.sql.Timestamp;
-
-import org.hibernate.annotations.CreationTimestamp;
-
-import com.sparta.myblog.dto.CommnetRequestDto;
+import com.sparta.myblog.dto.CommentRequestDto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,8 +36,7 @@ public class Comment extends Timestamped {
 	@Column(nullable = false, length = 200)
 	private String comment;
 
-	public Comment (Long id, Post post, User user, CommnetRequestDto requestDto){
-		this.id = id;
+	public Comment (Post post, User user, CommentRequestDto requestDto){
 		this.post = post;
 		this.user = user;
 		this.comment = requestDto.getComment();
