@@ -92,5 +92,24 @@ public class PostService {
 	}
 
 	// 5. 삭제하기
+	@Transactional
+	public ResponseEntity <ApiResponseDto> deletePost(Long id, User user) {
 
+		Post post = postRepository.findById(id).orElse(null);
+
+		// 게시글 사용 권한 확인하기
+		if (post == null) {
+			log.error("삭제할 게시물이 존재하지 않음");
+			return ResponseEntity.status(400)
+				.body(new ApiResponseDto("삭제할 게시물이 존재하지 않습니다.", HttpStatus.BAD_REQUEST.value()));
+
+		} else if (!post.getUser().getUserId().equals(user.getUserId())) {
+			log.error("권한 없는 사용자의 접근");
+			return ResponseEntity.status(400).body(new ApiResponseDto("권한이 없습니다.", HttpStatus.BAD_REQUEST.value()));
+
+		}
+
+		return ResponseEntity.status(200).body(new ApiResponseDto("게시물 삭제가 완료되었습니다.", HttpStatus.OK.value()));
+
+	}
 }
