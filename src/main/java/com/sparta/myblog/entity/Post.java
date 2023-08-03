@@ -1,7 +1,11 @@
 package com.sparta.myblog.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.sparta.myblog.dto.PostRequestDto;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +40,10 @@ public class Post extends Timestamped{
 
 	@Column(nullable = false, length = 500)
 	private String content;
+
+	// post 를 연관관계의 주인으로 설정. post 엔티티 제거시 연관된 comment 제거.
+	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+	private List <Comment> commentList = new ArrayList<>();
 
 	public Post(PostRequestDto requestDto, User user){
 		this.user = user;
