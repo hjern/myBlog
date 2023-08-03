@@ -25,7 +25,7 @@ public class CommentController {
 	private final CommentService commentService;
 
 	// 1. 댓글 작성하기
-	@PostMapping("/post/{postId}/comment")
+	@PostMapping("/comment")
 	public ResponseEntity <ApiResponseDto> addComment
 	(@PathVariable Long postId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -33,7 +33,7 @@ public class CommentController {
 	}
 
 	// 2. 댓글 수정하기
-	@PutMapping("/post/{postId}/comment/{commentId}")
+	@PutMapping("/comment/{commentId}")
 	public ResponseEntity <ApiResponseDto> updateComment
 	(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
@@ -41,7 +41,7 @@ public class CommentController {
 	}
 
 	// 3. 댓글 삭제하기
-	@DeleteMapping("/post/{postId}/comment/{commentId}")
+	@DeleteMapping("/comment/{commentId}")
 	public ResponseEntity <ApiResponseDto> deleteComment
 	(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
