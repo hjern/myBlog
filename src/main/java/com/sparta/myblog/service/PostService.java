@@ -109,6 +109,7 @@ public class PostService {
 
 		}
 
+		postRepository.delete(post);
 		return ResponseEntity.status(200).body(new ApiResponseDto("게시물 삭제가 완료되었습니다.", HttpStatus.OK.value()));
 
 	}
