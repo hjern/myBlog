@@ -5,6 +5,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,12 @@ public class CommentController {
 	}
 
 	// 2. 댓글 수정하기
+	@PutMapping("/post/{postId}/comment/{commentId}")
+	public ResponseEntity <ApiResponseDto> updateComment
+	(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+		return commentService.updateComment(commentId, requestDto, userDetails.getUser());
+	}
 
 	// 3. 댓글 삭제하기
 	@DeleteMapping("/post/{postId}/comment/{commentId}")

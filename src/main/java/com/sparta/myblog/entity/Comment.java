@@ -42,4 +42,7 @@ public class Comment extends Timestamped {
 		this.comment = requestDto.getComment();
 	}
 
+	public void update(String comment) {
+		this.comment = comment;
+	}
 }

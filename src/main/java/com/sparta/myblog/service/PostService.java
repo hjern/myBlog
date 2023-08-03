@@ -26,6 +26,7 @@ public class PostService {
 	private final PostRepository postRepository;
 
 	// 1. 글쓰기
+	@Transactional
 	public ResponseEntity<ApiResponseDto> createPost(PostRequestDto requestDto, User user) {
 
 		// 권한 없는 사용자의 접근
