@@ -26,6 +26,7 @@ public class PostService {
 	private final PostRepository postRepository;
 
 	// 1. 글쓰기
+	@Transactional
 	public ResponseEntity<ApiResponseDto> createPost(PostRequestDto requestDto, User user) {
 
 		// 권한 없는 사용자의 접근
@@ -109,6 +110,7 @@ public class PostService {
 
 		}
 
+		postRepository.delete(post);
 		return ResponseEntity.status(200).body(new ApiResponseDto("게시물 삭제가 완료되었습니다.", HttpStatus.OK.value()));
 
 	}
